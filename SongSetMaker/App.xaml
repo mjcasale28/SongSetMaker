@@ -1,0 +1,26 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SongSetMaker"
+             x:Class="SongSetMaker.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="White"></Setter>
+                <Setter Property="BarTextColor" Value="Black"></Setter>
+            </Style>
+            <Style x:Key="DarkThemeStyle" TargetType="Label" >
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="NavigationPage.BackgroundColor" Value="White" />
+            </Style>
+            <Style x:Key="LightThemeStyle" TargetType="Label" >
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="NavigationPage.BackgroundColor" Value="Black" />
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

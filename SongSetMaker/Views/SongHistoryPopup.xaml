@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="SongSetMaker.Views.SongHistoryPopup" Padding="0"
+    >
+
+    <VerticalStackLayout Padding="5" 
+                         Spacing="15"
+                         WidthRequest="300" 
+                         HeightRequest="600"
+                         BackgroundColor="Ivory"
+                         >
+
+        <!-- Song Title -->
+        <Label Text="{Binding SongTitle}"
+               FontSize="22"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="Black" />
+
+        <!-- Total Count -->
+        <Label Text="{Binding TotalCount, StringFormat='Total Uses: {0}'}"
+               FontSize="18"
+               HorizontalOptions="Center"
+               TextColor="DarkBlue" />
+
+        <!-- List of Dates -->
+        <CollectionView ItemsSource="{Binding Dates}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding}"
+                           FontSize="16"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           Margin="5,2" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Close Button -->
+        <Button Text="Close"
+                Command="{Binding CloseCommand}"
+                BackgroundColor="DarkBlue"
+                TextColor="White"
+                CornerRadius="8"
+                HorizontalOptions="Center"
+                Margin="0,10,0,0" />
+
+    </VerticalStackLayout>
+
+</toolkit:Popup>

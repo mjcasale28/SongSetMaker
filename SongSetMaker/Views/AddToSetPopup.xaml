@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="SongSetMaker.Views.AddToSetPopup" Padding="0"    
+    >
+
+    <VerticalStackLayout Padding="5" Spacing="10"
+                         WidthRequest="300" 
+                         HeightRequest="300"
+                         BackgroundColor="Ivory"
+                         >
+
+        <Label Text="Add Song to Set"
+               FontSize="20"
+               HorizontalOptions="Center" />
+
+        <Label Text="{Binding SongTitle}"
+               FontSize="18"
+               HorizontalOptions="Center"
+               TextColor="DarkBlue" />
+
+        <!-- Lead Singer Dropdown -->
+        <Picker Title="Select Lead Singer"                
+                HorizontalOptions="Center"
+                TextColor="Red"                
+                ItemsSource="{Binding LeadSingers}"
+                SelectedItem="{Binding SelectedLeadSinger}" />
+
+        <!-- Song Key Entry -->
+        <Entry Placeholder="Song Key"
+               TextColor="Red"
+               HorizontalOptions="Center"
+               Text="{Binding SongKey}" />
+
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="Cancel"
+                    Clicked="OnCancelClicked" />
+
+            <Button Text="Add"
+                    Clicked="OnAddClicked" />
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</toolkit:Popup>
