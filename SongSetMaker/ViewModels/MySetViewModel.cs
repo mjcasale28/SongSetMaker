@@ -317,7 +317,7 @@ namespace SongSetMaker.ViewModels
                     //  ? EmailBodyFormat.PlainText
                     //  : EmailBodyFormat.Html,
                     BodyFormat = EmailBodyFormat.PlainText,
-                    To = new List<string> { "mjcasale@gmail.com " } // blank but valid
+                    To = new List<string> { "worshipteam@henriettacf.org" } // blank but valid
                 };
                 // Send Email Message using OS Email Client
                 try
