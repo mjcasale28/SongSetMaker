@@ -7,8 +7,23 @@
     xmlns:viewmodels="clr-namespace:SongSetMaker.ViewModels"
     Shell.BackgroundColor="White"
     >
-
     <TabBar>
+        <Tab Title="Home">
+            <ShellContent Title="All Songs"
+                         Icon="lyrics.png"
+                         ContentTemplate="{DataTemplate views:MainPage}" />
+
+            <ShellContent Title="Song Set"
+                         Icon="build.png"
+                         ContentTemplate="{DataTemplate views:MySetPage}" />
+        </Tab>
+    </TabBar>
+</Shell>
+
+
+    <!--
+     FlyoutBehavior="Flyout"
+    <TabBar x:Name="MainTabs">
         <Tab Title="All Songs" Icon="lyrics.png">
             <ShellContent
                 Title="Songs"
@@ -21,5 +36,5 @@
                 ContentTemplate="{DataTemplate views:MySetPage}" />
         </Tab>
     </TabBar>
+    -->
 
-</Shell>

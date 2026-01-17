@@ -23,6 +23,9 @@ namespace SongSetMaker.Views
             if (BindingContext is MySetViewModel vm)
                 await vm.LoadMySetCommand.ExecuteAsync(null);
         }
+        bool IsKindle() =>
+           DeviceInfo.Platform == DevicePlatform.Android &&
+           DeviceInfo.Manufacturer?.ToLower().Contains("amazon") == true;
 
         private void DownloadCommand()
         {

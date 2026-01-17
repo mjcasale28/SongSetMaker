@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using SongSetMaker.Models;
@@ -19,6 +20,24 @@ namespace SongSetMaker.ViewModels
 
         private readonly IDatabaseService _db;
         private readonly RESTApiService _apiServ; // Changed to readonly and lowercase for convention
+        
+
+        private string _songDate;
+        public string SongDate
+        {
+            get => _songDate;
+            set => SetProperty(ref _songDate, value);
+        }
+        public string SongDateFormatted
+        {
+            get
+            {
+                if (DateTime.TryParse(SongDate, out var dt))
+                    return dt.ToString("yyyy-MM-dd");
+
+                return SongDate; // fallback
+            }
+        }
 
         private int _songCount;
         public int SongCount
@@ -52,6 +71,8 @@ namespace SongSetMaker.ViewModels
                 var list = await _db.GetMySongSetAsync();
                 foreach (var s in list)
                     MySongs.Add(s);
+                SongDate = MySongs.FirstOrDefault()?.SongDate;
+                OnPropertyChanged(nameof(SongDateFormatted));
                 SongCount = MySongs.Count;
             }
             catch (Exception ex)

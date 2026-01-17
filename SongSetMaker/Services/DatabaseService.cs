@@ -181,6 +181,7 @@ namespace SongSetMaker.Services
                         YouTubeUrl = song.YouTubeUrl,
                         ChordSheetUrl = song.ChordSheetUrl,
                         DateItemAdded = currDate,
+                        SongDate = song.SongDate,
                         Scripture = song.Scripture,
                         ScriptureUrl = song.ScriptureUrl
                     });

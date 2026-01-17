@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SongSetMaker.ViewModels"
              x:Class="SongSetMaker.Views.MainPage"
-             BackgroundColor="Navy"
+             BackgroundColor="Navy"             
              Title="Master">
 
+        
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="history.png"
                      Text="Reload Song History"
@@ -17,11 +18,13 @@
     </ContentPage.ToolbarItems>
 
 
-    <Grid Padding="10" RowDefinitions="Auto, Auto, *">
+    <Grid x:Name="RootGrid" Padding="10" RowDefinitions="Auto, Auto, *">
         <!-- ✅ Row 0: Search + Key Filter -->
         <Grid Grid.Row="0"
-          ColumnDefinitions="3*,*, *"
-          ColumnSpacing="10">
+          ColumnDefinitions="4*,Auto,Auto"
+          ColumnSpacing="10"
+          RowDefinitions="Auto"
+        >
 
             <!-- ✅ Search Bar -->
             <SearchBar Grid.Column="0" 
@@ -30,21 +33,22 @@
                    SearchCommand="{Binding PerformSearchCommand}"
                    SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}"
                    BackgroundColor="White"
-                   TextColor="Black" />
+                   TextColor="Black"
+                   HorizontalOptions="Fill"/>
 
             <Picker Grid.Column="1" 
                     ItemsSource="{Binding Keys}"
                     SelectedItem="{Binding SelectedKey}"
                     BackgroundColor="White"
                     TextColor="Black"
-                    WidthRequest="120" />
+                    HorizontalOptions="End"/>
 
             <Picker Grid.Column="2"
                     ItemsSource="{Binding SortOptions}"
                     SelectedItem="{Binding SelectedSortOption}"
                     BackgroundColor="White"
                     TextColor="Black"
-                    WidthRequest="140" />
+                    HorizontalOptions="End"/>
 
         </Grid>
 
@@ -181,6 +185,7 @@
                            VerticalOptions="Center"
                            HorizontalOptions="Center"/>
     </Grid>
+
 
 </ContentPage>
     

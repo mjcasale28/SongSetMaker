@@ -21,11 +21,13 @@ namespace SongSetMaker.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            
             if (BindingContext is MainPageViewModel vm)
                 await vm.LoadSongsCommand.ExecuteAsync(null);
         }
-
+        bool IsKindle() =>
+                   DeviceInfo.Platform == DevicePlatform.Android &&
+                   DeviceInfo.Manufacturer?.ToLower().Contains("amazon") == true;
         private void DownloadCommand()
         {
             if (BindingContext is MainPageViewModel viewModel)
