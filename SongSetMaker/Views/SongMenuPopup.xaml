@@ -17,22 +17,34 @@
                HorizontalOptions="Center"
                TextColor="Black"
                FontAttributes="Bold" />
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="YouTube"
+                    BackgroundColor="DarkBlue"
+                    HorizontalOptions="Center"
+                    Command="{Binding OpenYouTubeCommand}" />
 
-        <Button Text="YouTube"
-                HorizontalOptions="Center"
-                Command="{Binding OpenYouTubeCommand}" />
+            <Button Text="Chords"
+                    BackgroundColor="DarkBlue"
+                    HorizontalOptions="Center"
+                    Command="{Binding OpenChordSheetCommand}" />
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="Scripture"
+                    BackgroundColor="DarkGreen"
+                    HorizontalOptions="Center"
+                    Command="{Binding OpenScriptureCommand}" />
 
-        <Button Text="Chords"
-                HorizontalOptions="Center"
-                Command="{Binding OpenChordSheetCommand}" />
+            <Button Text="History"
+                    BackgroundColor="DarkGreen"
+                    HorizontalOptions="Center"
+                    Command="{Binding OpenHistoryCommand}" />
+        </HorizontalStackLayout>
 
-        <Button Text="Scripture"
-                HorizontalOptions="Center"
-                Command="{Binding OpenScriptureCommand}" />
-
-        <Button Text="History"
-                HorizontalOptions="Center"
-                Command="{Binding OpenHistoryCommand}" />
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="Cancel"
+                    BackgroundColor="DarkRed"
+                    Clicked="OnCancelClicked" />
+        </HorizontalStackLayout>
 
     </VerticalStackLayout>
 

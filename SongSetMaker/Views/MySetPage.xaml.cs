@@ -1,9 +1,9 @@
 // Views/MySetPage.xaml.cs
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Extensions;
-using SongSetMaker.ViewModels;
 using SongSetMaker.Models;
 using SongSetMaker.Services;
-using CommunityToolkit.Maui.Alerts;
+using SongSetMaker.ViewModels;
 
 namespace SongSetMaker.Views
 {

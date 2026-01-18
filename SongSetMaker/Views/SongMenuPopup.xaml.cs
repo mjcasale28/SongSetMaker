@@ -21,5 +21,10 @@ namespace SongSetMaker.Views
             BindingContext = new SongMenuViewModel(songset, db);
             //  Console.WriteLine(GetType().BaseType);
         }
+
+        private async void OnCancelClicked(object sender, EventArgs e)
+        {
+            await CloseAsync(/* optional result, e.g. true */);
+        }
     }
 }
