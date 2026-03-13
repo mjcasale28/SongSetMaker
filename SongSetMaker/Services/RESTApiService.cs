@@ -23,10 +23,7 @@ namespace SongSetMaker.Services
     /// </summary>
     public class RESTApiService
     {
-        // Prod - Android folder
-        private readonly string baseUrl = "https://script.google.com/macros/s/AKfycbwo5kdALs20XJtuCwMuzV6WKh_YX_sn9ogZzjGQDuPzDWz7H_bJybVOU_jAwqJy8ZEZ/exec";
-        // Dev - Android Dev
-        // private readonly string baseUrl = "https://script.google.com/macros/s/AKfycbz_C9boRjenjaOG86gii8-_NlEtSVFmkviSLlb9cRf1hZmPXwhWMSPexodyfjaE0zo4Jw/exec";
+        private readonly string baseUrl = "<YOUR GOOGLE SHEET DEPLOYED URL>";
         public string StatusMessage;
         public string songList;
         public List<Song> masterSongList;
