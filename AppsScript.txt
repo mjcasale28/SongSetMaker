@@ -1,0 +1,295 @@
+/**
+ * WorshipSetMaker HTTP GET and POST operations
+ * Author:  Marc Casale
+ * Date:    1/20/21
+ * Modifications: 
+ *  3/27/22  - Updated doPost for addsong, addmaster to use JSON object
+ *  3/27/22  - Added updateSongTheme
+ *  3/27/22  - added sort after song added to master song set
+ *  3/27/22  - Correct Clear Sheet method to not clear an empty sheet
+ *  1/4/25   - Added 2 new columns: Scripture and Scripture_URL
+ *             addSong, getSongs
+ */
+// Get ID from Sheet URL
+var ss=SpreadsheetApp.getActiveSpreadsheet();
+var sheet = null;
+
+function useDataRange() {
+  var rows = sheet.getDataRange().getValues();
+//  Logger.log(rows);
+}
+
+/**
+ * WorshipSetMaker HTTP GET function
+ *
+ * @param {JSON} e : JSON Parameters
+ * @return {JSON} : for getlist action - a list of songs
+ */
+function doGet(e){
+    var action = e.parameter.action;
+    if (action == 'getlist')
+    {
+      sheet = ss.getSheetByName('Songs');  
+      return getSongs();
+    }
+    if (action == 'getset') {
+      sheet = ss.getSheetByName('Songset');  
+      return getSongs();
+    }
+    if (action == 'gethistory') {
+      sheet = ss.getSheetByName('History');  
+      return getSongHistory();
+    }
+
+}
+
+
+function doPost(request) {
+  //    return ContentService.createTextOutput(JSON.stringify(request));
+
+    var action = request.parameter.action;
+    // mjc - 3/27/22 - updated addsong method for JOSN array
+    if (action == 'addsong')
+    {
+      sheet = ss.getSheetByName('Songset');  
+      var data = JSON.parse(request.postData.contents);
+      var arrayData = data['songs'];
+
+      clearSheet();
+      var tb = [];
+      arrayData.forEach(function(e) {
+        var row = [e.title,e.songkey,e.songlead,e.tempo,e.timing,e.artist,e.cclinum,e.youtube,e.chordsheet,e.theme,e.songdate, e.scripture, e.scriptureurl];
+        tb.push(row);
+      });
+      sheet.getRange(sheet.getLastRow()+1,1,tb.length,tb[0].length).setValues(tb);
+      sheet.flush();
+      return ContentService.createTextOutput(JSON.stringify(request)).setMimeType(ContentService.MimeType.JSON);
+
+    }
+
+    // mjc - 3/27/22 - updated addsong method for JOSN object
+    if (action == 'addmaster')
+    {
+      sheet = ss.getSheetByName('Songs');  
+      var e = JSON.parse(request.postData.contents);
+      sheet.appendRow([e.title,e.songkey,e.songlead,e.tempo,e.timing,e.artist,e.cclinum,e.youtube,e.chordsheet,e.theme,e.songdate, e.scripture, e.scriptureurl]);      
+      sheet.sort(1);
+      return ContentService.createTextOutput(JSON.stringify(request));
+    }
+
+    if (action == 'deletesong')
+    {
+
+      sheet = ss.getSheetByName('Songset');  
+      var ccliNum = request.parameter.ccli;
+      deleteSong(ccliNum)
+      return ContentService.createTextOutput(JSON.stringify(request));
+    }
+
+    if (action == 'deleteset')
+    {
+     // sheet = ss.getSheetByName('Songset');  
+      clearSheet();
+      return ContentService.createTextOutput(JSON.stringify(request));
+    }
+
+    // mjc - 3/27/22 - added new call for updated Song Theme
+    if (action == 'updatetheme')
+    {
+      sheet = ss.getSheetByName('Songs');
+      var ccliNum = request.parameter.cclinum;  
+      var songTheme = request.parameter.theme;  
+      var response;
+      response = updateSongTheme(ccliNum,songTheme);
+      return ContentService.createTextOutput(response);
+    }
+}
+
+/**
+ * WorshipSetMaker Custom function to add Song to song set sheet
+ *
+ * @param {JSON object} request : Name request  - parameters
+ * @return {string} a string in JSON format
+ * @customfunction
+ */
+function addSong(e){
+  var title = e.parameter.title;
+  var key = e.parameter.songkey;
+  var lead = e.parameter.songlead;
+  var tempo = e.parameter.tempo;
+  var timing = e.parameter.timing;
+  var artist = e.parameter.artist;
+  var ccli_num = e.parameter.cclinum;
+  var youtube = e.parameter.youtube;
+  var chordsheet = e.parameter.chordsheet;
+  var songDate = e.parameter.songdate;
+  var songTheme = e.parameter.theme;
+  var scripture = e.parameter.scripture;
+  var scriptureUrl = e.parameter.scriptureurl;
+  sheet.appendRow([title,key,lead,tempo,timing,artist,ccli_num,youtube,chordsheet,songTheme,songDate,scripture, scriptureUrl]);
+  // @ts-ignore
+  return ContentService.createTextOutput(JSON.stringify(e)).setMimeType(ContentService.MimeType.JSON);
+
+};
+
+function updateSongTheme(ccliNum, songTheme){
+  var sheet = ss.getSheetByName('Songs');  
+  var RANGE = sheet.getDataRange();
+  var SEARCH_VAL = parseInt(ccliNum);
+  var COL_TO_SEARCH = 6; // The column to search for the DELETE_VAL (Zero is first)
+  var COL_TO_UPDATE = 10;  // The column to update (Song Theme)
+  var rangeVals = RANGE.getValues();
+  
+  //Reverse the 'for' loop.
+  for(var i = rangeVals.length-1; i >= 0; i--){
+    if(rangeVals[i][COL_TO_SEARCH] === SEARCH_VAL){
+        //var myTheme = sheet.getRange(i,COL_TO_UPDATE).getValue() 
+        sheet.getRange(i+1,COL_TO_UPDATE).setValue(songTheme);
+    };
+  };
+  var result = "{result:0}";
+ return result;
+};
+
+function deleteSong(ccliNum){
+  
+  var sheet = ss.getSheetByName('Songset'); 
+  var RANGE = sheet.getDataRange();
+  var DELETE_VAL = parseInt(ccliNum);
+  var COL_TO_SEARCH = 6; // The column to search for the DELETE_VAL (Zero is first)
+  
+  var rangeVals = RANGE.getValues();
+  
+  //Reverse the 'for' loop.
+  for(var i = rangeVals.length-1; i >= 0; i--){
+    if(rangeVals[i][COL_TO_SEARCH] === DELETE_VAL){
+      sheet.deleteRow(i+1); 
+    };
+  };
+  
+ return 0;
+};
+
+
+function copySongHistory() {
+  // Copy Song Set from songset sheet to history sheet
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var copySheet = ss.getSheetByName("Songset");
+  var pasteSheet = ss.getSheetByName("History");
+
+  // get source range
+  var source = copySheet.getRange(2,1,7,7);
+  //var numColumns = pasteSheet.getLastColumn();
+  var destination = pasteSheet.getRange(pasteSheet.getLastRow()+1,1,7,7);
+ 
+  // copy values to destination range
+  source.copyTo(destination);
+  clockOut();
+}
+
+function clockOut() {
+  // Get all data in History sheet
+  // Set blank dates to today's date
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("History");
+  var selection=sheet.getDataRange();
+  var columns=selection.getNumColumns();
+  var rows=selection.getNumRows();
+  for (var row=1; row < (rows+1); row++) { 
+    var cell=selection.getCell(row,columns);
+    if (cell.isBlank()) {
+      var formattedDate = Utilities.formatDate(new Date(), "GMT", "MM/dd/yy");
+      cell.setValue(formattedDate);
+    }
+  }
+}
+
+function getSongs(){
+  
+  var records={};
+ 
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1,sheet.getLastColumn()).getValues();
+      data = [];
+
+  for (var r = 0, l = rows.length; r < l; r++) {
+    var row = rows[r],
+    record  = {};
+    record['title'] = row[0];
+    record['key']=row[1];
+    record['lead']=row[2];
+    record['tempo']=row[3];
+    record['timing']=row[4];
+    record['artist']=row[5];
+    record['ccli_num']=row[6];
+    record['youtube']=row[7];
+    record['chordsheet']=row[8];
+    record['theme']=row[9];
+    record['songdate']=row[10];
+    record['scripture']=row[11];
+    record['scriptureurl']=row[12];
+    
+    data.push(record);
+    
+   }
+  records.songs = data;
+  var result=JSON.stringify(records);
+  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getSongHistory(){
+  
+  var records={};
+ 
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1,sheet.getLastColumn()).getValues();
+      data = [];
+
+  for (var r = 0, l = rows.length; r < l; r++) {
+    var row = rows[r],
+    record  = {};
+    record['ccli_num']=row[6];
+    record['songdate']=row[7];
+    
+    data.push(record);
+    
+   }
+  records.songs = data;
+  var result=JSON.stringify(records);
+  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
+}
+
+
+
+function makeCopy() {
+
+// generates the timestamp and stores in variable formattedDate as year-month-date hour-minute-second
+var formattedDate = Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd' 'HH:mm:ss");
+
+// gets the name of the original file and appends the word "copy" followed by the timestamp stored in formattedDate
+var name = SpreadsheetApp.getActiveSpreadsheet().getName() + " Copy " + formattedDate;
+
+// gets the destination folder by their ID. REPLACE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx with your folder's ID that you can get by opening the folder in Google Drive and checking the URL in the browser's address bar
+var destination = DriveApp.getFolderById("1ruUx8pBtIhOU7Hsskg0wg1L4qIuupQ4b");
+
+// gets the current Google Sheet file
+var file = DriveApp.getFileById(SpreadsheetApp.getActiveSpreadsheet().getId())
+
+// makes copy of "file" with "name" at the "destination"
+file.makeCopy(name, destination);
+}
+
+// mjc - 3/27/22 - updated to correct bug - prevent deletion of empty sheet
+function clearSheet() 
+{
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Songset");
+
+  var start, howManyToDelete;
+
+  start = 2;//Hard coded row number from where to start deleting
+  howManyToDelete = sheet.getLastRow() - start + 1;//How many rows to delete -
+  //The blank rows after the last row with content will not be deleted
+  if (howManyToDelete > 0) {
+    sheet.deleteRows(start, howManyToDelete);
+  }
+ return 0;
+}
