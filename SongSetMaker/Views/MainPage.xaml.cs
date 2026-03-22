@@ -50,5 +50,9 @@ namespace SongSetMaker.Views
                 await this.ShowPopupAsync(new SongMenuPopup(song, _db));
             }
         }
+        private void OnAddSongClicked(object sender, EventArgs e)
+        {
+            this.ShowPopup(new AddSongPopup(_db));
+        }
     }
 }

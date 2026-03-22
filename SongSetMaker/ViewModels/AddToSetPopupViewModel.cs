@@ -22,12 +22,40 @@ namespace SongSetMaker.ViewModels
             SongTitle = song.Title;
             songKey = song.Key;
 
+            _ = LoadLeadSingersAsync();
+           // SelectedLeadSinger = LeadSingers[0];
+            /*
             LeadSingers.Add("Barbie");
             LeadSingers.Add("Doug");
             LeadSingers.Add("Marc");
             LeadSingers.Add("Marc & Barbie");
+            */
+        }
 
-            SelectedLeadSinger = "Barbie"; // Default value
+
+        private async Task LoadLeadSingersAsync()
+        {
+            try
+            {
+                List<string> singers = await _db.GetDistinctLeadSingersAsync();
+
+        //        var singers = await _db.GetDistinctLeadSingersAsync();
+
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    LeadSingers.Clear();
+                    foreach (var s in singers)
+                    {
+                        LeadSingers.Add(s);
+                    }
+                });
+            }
+            catch {
+                LeadSingers.Add("Psalmist");
+            } finally
+            {
+                SelectedLeadSinger = LeadSingers[0];
+            }
         }
 
         [ObservableProperty]

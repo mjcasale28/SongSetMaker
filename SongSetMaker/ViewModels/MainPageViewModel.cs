@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -204,11 +205,21 @@ namespace SongSetMaker.ViewModels
         }
 
         //------------ Relay Commands -------------------------
+
         [RelayCommand]
         private void PerformSearch(string query)
         {
             SearchText = query;
             FilterSongs();
+        }
+
+        [RelayCommand]
+        async Task RemoveSong(Song song)
+        {
+            await _db.RemoveFromMasterAsync(song.SongId);
+            Songs.Remove(song);
+            SongCount = Songs.Count;
+            await LoadSongs();
         }
 
         [RelayCommand]

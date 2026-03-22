@@ -13,8 +13,11 @@ namespace SongSetMaker.Services
         Task AddMasterToMySetAsync(List<Song> songs);
         Task AddSetToMySetAsync(List<SongSet> songs);
         Task AddSongToMySetAsync(Song song);
+        Task AddSongToMasterAsync(Song song);
         Task AddHistoryAsync(List<SongHistory> songhist);
         Task RemoveFromMySetAsync(int songId);
+        Task RemoveFromMasterAsync(int songId);
+        Task<List<string>> GetDistinctLeadSingersAsync();
         Task ClearMySetAsync();
     }
 }

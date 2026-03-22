@@ -20,22 +20,26 @@
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
             <Button Text="YouTube"
                     BackgroundColor="DarkBlue"
+                    TextColor="White"
                     HorizontalOptions="Center"
                     Command="{Binding OpenYouTubeCommand}" />
 
             <Button Text="Chords"
                     BackgroundColor="DarkBlue"
+                    TextColor="White"
                     HorizontalOptions="Center"
                     Command="{Binding OpenChordSheetCommand}" />
         </HorizontalStackLayout>
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
             <Button Text="Scripture"
                     BackgroundColor="DarkGreen"
+                    TextColor="White"
                     HorizontalOptions="Center"
                     Command="{Binding OpenScriptureCommand}" />
 
             <Button Text="History"
                     BackgroundColor="DarkGreen"
+                    TextColor="White"
                     HorizontalOptions="Center"
                     Command="{Binding OpenHistoryCommand}" />
         </HorizontalStackLayout>
@@ -43,6 +47,7 @@
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
             <Button Text="Cancel"
                     BackgroundColor="DarkRed"
+                    TextColor="White"
                     Clicked="OnCancelClicked" />
         </HorizontalStackLayout>
 

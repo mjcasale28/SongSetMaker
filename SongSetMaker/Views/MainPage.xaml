@@ -4,17 +4,18 @@
              xmlns:vm="clr-namespace:SongSetMaker.ViewModels"
              x:Class="SongSetMaker.Views.MainPage"
              BackgroundColor="Navy"             
-             Title="Master">
+             Title="Song Library">
 
         
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="history.png"
-                     Text="Reload Song History"
-                 Command="{Binding DownloadHistoryCommand}" />
-
+        <ToolbarItem Text="Add Song"
+             IconImageSource="add.png"
+             Clicked="OnAddSongClicked" />
+<!--
         <ToolbarItem IconImageSource="download.png"
                      Text="Download Songs"
                  Command="{Binding DownloadSongsCommand}" />
+        -->
     </ContentPage.ToolbarItems>
 
 
@@ -138,6 +139,18 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <ImageButton Grid.Row="1" Grid.Column="1"                                         
+                                        Source="delete.png" 
+                                        BackgroundColor="Transparent"
+                                        HeightRequest="20"
+                                        WidthRequest="20"
+                                        Margin="5"
+                                        Padding="8"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                                          Path=RemoveSongCommand}"
+                                        CommandParameter="{Binding .}">
+                                </ImageButton>
+
                                 <!-- Artist Info Row -->
                                 <Label Grid.Row="2" Grid.Column="0"
                                        VerticalTextAlignment="Center">

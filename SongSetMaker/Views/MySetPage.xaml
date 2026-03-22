@@ -12,10 +12,12 @@
              Command="{Binding ClearSongSetCommand}" />
         <ToolbarItem IconImageSource="mail.png" Text="Email Song Set"
              Command="{Binding EmailSongSetCommand}" />
+        <!--
         <ToolbarItem IconImageSource="upload.png" Text="Upload Song Set"
                  Command="{Binding UploadSongSetCommand}" />
         <ToolbarItem IconImageSource="download.png" Text="Download Song Set"
                  Command="{Binding DownloadSongsCommand}" />
+        -->
     </ContentPage.ToolbarItems>
     <Grid x:Name="RootGrid" Padding="10" ColumnDefinitions="*,Auto" RowDefinitions="Auto, *">
         <Grid ColumnDefinitions="*,*">

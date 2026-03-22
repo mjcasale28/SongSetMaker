@@ -320,44 +320,73 @@ namespace SongSetMaker.ViewModels
             foreach (var song in MySongs)
                 song.SongDate = selectedDate.ToString("MM/dd/yyyy");
 
+            // 4. Build the email body
+            var emailBody = BuildEmailBody(MySongs, selectedDate.ToString("MM/dd/yyyy"));
+
+            // 5. Launch the email client
+            var message = new EmailMessage
+            {
+                Subject = $"Praise and Worship Song Set for {selectedDate:MMMM dd, yyyy}",
+                Body = emailBody,
+                // BodyFormat = DeviceInfo.Current.Platform == DevicePlatform.WinUI
+                //  ? EmailBodyFormat.PlainText
+                //  : EmailBodyFormat.Html,
+                BodyFormat = EmailBodyFormat.PlainText,
+                To = new List<string> { "" } // blank but valid
+            };
+            // Send Email Message using OS Email Client
+            try
+            {
+                await Email.ComposeAsync(message);
+            }
+            catch (FeatureNotSupportedException)
+            {
+                await Shell.Current.DisplayAlert("Error", "Email is not supported on this device.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Email failed: {ex.Message}", "OK");
+            }
+
             // 3. Upload the songset first
-            var success = await _apiServ.UploadSongSetAsync(MySongs.ToList());
+            //  var success = await _apiServ.UploadSongSetAsync(MySongs.ToList());
+            /*
+              if (success)
+              {
+                  await Shell.Current.DisplayAlert("Success", "Song set uploaded!", "OK");
+                  // 4. Build the email body
+                  var emailBody = BuildEmailBody(MySongs, selectedDate.ToString("MM/dd/yyyy"));
 
-            if (success)
-            {
-                await Shell.Current.DisplayAlert("Success", "Song set uploaded!", "OK");
-                // 4. Build the email body
-                var emailBody = BuildEmailBody(MySongs, selectedDate.ToString("MM/dd/yyyy"));
-
-                // 5. Launch the email client
-                var message = new EmailMessage
-                {
-                    Subject = $"HCF Praise and Worship Song Set for {selectedDate:MMMM dd, yyyy}",
-                    Body = emailBody,
-                    // BodyFormat = DeviceInfo.Current.Platform == DevicePlatform.WinUI
-                    //  ? EmailBodyFormat.PlainText
-                    //  : EmailBodyFormat.Html,
-                    BodyFormat = EmailBodyFormat.PlainText,
-                    To = new List<string> { "worshipteam@henriettacf.org" } // blank but valid
-                };
-                // Send Email Message using OS Email Client
-                try
-                {
-                    await Email.ComposeAsync(message);
-                }
-                catch (FeatureNotSupportedException)
-                {
-                    await Shell.Current.DisplayAlert("Error", "Email is not supported on this device.", "OK");
-                }
-                catch (Exception ex)
-                {
-                    await Shell.Current.DisplayAlert("Error", $"Email failed: {ex.Message}", "OK");
-                }
-            }
-            else
-            {
-                await Shell.Current.DisplayAlert("Error", "Upload failed.", "OK");
-            }
+                  // 5. Launch the email client
+                  var message = new EmailMessage
+                  {
+                      Subject = $"HCF Praise and Worship Song Set for {selectedDate:MMMM dd, yyyy}",
+                      Body = emailBody,
+                      // BodyFormat = DeviceInfo.Current.Platform == DevicePlatform.WinUI
+                      //  ? EmailBodyFormat.PlainText
+                      //  : EmailBodyFormat.Html,
+                      BodyFormat = EmailBodyFormat.PlainText,
+                      To = new List<string> { "worshipteam@henriettacf.org" } // blank but valid
+                  };
+                  // Send Email Message using OS Email Client
+                  try
+                  {
+                      await Email.ComposeAsync(message);
+                  }
+                  catch (FeatureNotSupportedException)
+                  {
+                      await Shell.Current.DisplayAlert("Error", "Email is not supported on this device.", "OK");
+                  }
+                  catch (Exception ex)
+                  {
+                      await Shell.Current.DisplayAlert("Error", $"Email failed: {ex.Message}", "OK");
+                  }
+              }
+              else
+              {
+                  await Shell.Current.DisplayAlert("Error", "Upload failed.", "OK");
+              }
+            */
         }
 
         private string BuildEmailBody(IEnumerable<SongSet> songs, string mySongDate)

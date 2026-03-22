@@ -42,6 +42,47 @@ namespace SongSetMaker.Services
                 .ToList();
         }
 
+
+        public async Task<List<string>> GetDistinctLeadSingersAsync()
+        {
+            await Init().ConfigureAwait(false);
+
+
+            var records = await _db.Table<Song>()
+                                   .ToListAsync()
+                                   .ConfigureAwait(false);
+
+            return records
+                .Select(r => r.LeadSinger)
+                .Distinct()
+                .OrderByDescending(d => d)
+                .ToList();
+        }
+        /*
+        public async Task<List<string>> GetDistinctLeadSingersAsync()
+        {
+            await Init();
+            try
+            {
+                var songs = await _db.Table<Song>()
+                    .Where(s => !string.IsNullOrEmpty(s.LeadSinger))                  
+                    .ToListAsync();
+
+                var distinct = songs
+                    .Select(s => s.LeadSinger!)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(s => s)
+                    .ToList();
+
+                return distinct;
+            }
+            catch (Exception ex)
+            {
+                return new List<string> { "Psalmist" };
+            }
+        }
+        */
+
         /// <summary>
         ///   Pulls the full list of all songs
         /// </summary>
@@ -216,6 +257,36 @@ namespace SongSetMaker.Services
                 });
             }
         }
+
+        public async Task AddSongToMasterAsync(Song song)
+        {
+            await Init();
+            var currDate = DateTime.Today.ToString("yyyy-MM-dd");
+
+            var exists = await _db.Table<Song>()
+                .FirstOrDefaultAsync(s => s.Title == song.Title && s.Artist == song.Artist);
+
+            if (exists == null)
+            {
+                await _db.InsertAsync(new Song
+                {
+                    Title = song.Title,
+                    Artist = song.Artist,
+                    LeadSinger = song.LeadSinger,
+                    Key = song.Key,
+                    Tempo = song.Tempo,
+                    CcliNum = song.CcliNum,
+                    Timing = song.Timing,
+                    Theme = song.Theme,
+                    YouTubeUrl = song.YouTubeUrl,
+                    ChordSheetUrl = song.ChordSheetUrl,
+                    DateItemAdded = currDate,
+                    Scripture = song.Scripture,
+                    ScriptureUrl = song.ScriptureUrl
+                });
+            }
+        }
+
         public async Task AddHistoryAsync(List<SongHistory> songhist)
         {
             await Init();
@@ -268,6 +339,11 @@ namespace SongSetMaker.Services
         {
             await Init();
             await _db.Table<SongSet>().DeleteAsync(s => s.SongId == songId);
+        }
+        public async Task RemoveFromMasterAsync(int songId)
+        {
+            await Init();
+            await _db.Table<Song>().DeleteAsync(s => s.SongId == songId);
         }
 
         public async Task ClearMySetAsync()

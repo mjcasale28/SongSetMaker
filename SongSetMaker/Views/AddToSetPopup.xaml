@@ -21,18 +21,28 @@
                HorizontalOptions="Center"
                TextColor="DarkBlue" />
 
-        <!-- Lead Singer Dropdown -->
-        <Picker Title="Select Lead Singer"                
+            <!-- Lead Singer Dropdown -->
+            <!-- Row 0 -->
+            <Picker                 
+                VerticalOptions="Center" 
                 HorizontalOptions="Center"
+                Title="Select Lead Singer"
+                TitleColor="Black"
                 TextColor="Red"                
                 ItemsSource="{Binding LeadSingers}"
                 SelectedItem="{Binding SelectedLeadSinger}" />
-
-        <!-- Song Key Entry -->
-        <Entry Placeholder="Song Key"
-               TextColor="Red"
-               HorizontalOptions="Center"
-               Text="{Binding SongKey}" />
+            <!-- Row 1 -->
+            <!-- Song Key Entry -->
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Label Text="Song Key" 
+                   VerticalOptions="Center" 
+                   TextColor="Black" FontAttributes="Bold" />
+            <Entry 
+                   Placeholder="Song Key"                   
+                   TextColor="Red"
+                   HorizontalOptions="Center"
+                   Text="{Binding SongKey}" />
+        </HorizontalStackLayout>
 
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
             <Button Text="Cancel"
