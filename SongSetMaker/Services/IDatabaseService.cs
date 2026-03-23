@@ -19,5 +19,6 @@ namespace SongSetMaker.Services
         Task RemoveFromMasterAsync(int songId);
         Task<List<string>> GetDistinctLeadSingersAsync();
         Task ClearMySetAsync();
+
     }
 }

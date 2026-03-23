@@ -87,6 +87,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\AboutPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\AddSongPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

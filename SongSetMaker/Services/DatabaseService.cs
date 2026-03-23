@@ -3,21 +3,68 @@ using SQLite;
 
 namespace SongSetMaker.Services
 {
-    public class DatabaseService : IDatabaseService
+    public class DatabaseService : IDatabaseService, IDisposable
     {
         private SQLiteAsyncConnection _db;
-
+        private readonly string databasePath = Constants.DatabasePath;
         private async Task Init()
         {
             if (_db is not null) return;
 
-            var databasePath = Path.Combine(FileSystem.AppDataDirectory, "WorshipSongs.db3");
+            //databasePath = Path.Combine(FileSystem.AppDataDirectory, "WorshipSongs.db3");
 
             _db = new SQLiteAsyncConnection(databasePath);
             await _db.CreateTableAsync<Song>();
             await _db.CreateTableAsync<SongSet>();
             await _db.CreateTableAsync<SongHistory>();
         }
+        // Helper to get/lazy-init connection
+        private SQLiteAsyncConnection GetConnection()
+        {
+            if (_db == null)
+            {
+                _db = new SQLiteAsyncConnection(databasePath);
+            }
+            return _db;
+        }
+
+        // ────────────────────────────────────────────────
+        // IDisposable implementation (synchronous dispose)
+        // ────────────────────────────────────────────────
+        private bool _disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);  // Prevent finalizer from running if Dispose was called
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                // Dispose managed resources
+                if (_db != null)
+                {
+                    _db.CloseAsync().GetAwaiter().GetResult();  // Sync wrapper — avoid if possible
+                    _db = null;
+                }
+            }
+
+            // If you had unmanaged resources (rare in MAUI/SQLite), release them here
+
+            _disposed = true;
+        }
+
+        // Optional: Finalizer (only needed if you have true unmanaged resources)
+        ~DatabaseService()
+        {
+            Dispose(false);
+        }
+
+
         /// <summary>
         ///     GetSongHistory - pulls the song history dates based on the ccli number
         /// </summary>
@@ -362,5 +409,7 @@ namespace SongSetMaker.Services
             await Init();
             await _db.DeleteAllAsync<Song>().ConfigureAwait(false);
         }
+
+
     }
 }

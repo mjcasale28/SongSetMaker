@@ -1,0 +1,106 @@
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" 
+               x:Class="SongSetMaker.Views.AboutPopup"
+               BackgroundColor="Transparent">
+
+    <!-- Only ONE direct child for the Popup's Content -->
+    <Border Stroke="Gray" 
+            StrokeThickness="1" 
+            StrokeShape="RoundRectangle 15"
+            BackgroundColor="Ivory"
+            MaximumHeightRequest="600"
+            WidthRequest="550"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Padding="20">
+
+        <Grid RowDefinitions="Auto, *, Auto">
+
+            <!-- Header -->
+            <VerticalStackLayout Grid.Row="0" 
+                                 Spacing="2" 
+                                 HorizontalOptions="Center" 
+                                 Margin="0,0,0,15">
+                <Label Text="SongSetMaker" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       TextColor="Black" 
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Version 2.0" 
+                       FontSize="14" 
+                       TextColor="#555" 
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Scrollable body -->
+            <ScrollView Grid.Row="1" 
+                        Margin="0,10,0,10">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="An app to manage song libraries and create worship song sets." 
+                           FontSize="16" 
+                           FontAttributes="Italic" 
+                           TextColor="Black" />
+
+                    <BoxView HeightRequest="1" Color="LightGray" />
+
+                    <Label Text="Features" 
+                           FontAttributes="Bold" 
+                           FontSize="16" 
+                           TextColor="Black" />
+                    <Label Text="• Search/Filter (Artist, Title, Theme, Key)&#10;• Sort by Tempo or Title&#10;• Custom Sets &amp; Emailing&#10;• View Chords &amp; Scripture&#10;• Backup &amp; Export Database" 
+                           LineHeight="1.2" 
+                           TextColor="Black" />
+
+                    <BoxView HeightRequest="1" Color="LightGray" />
+
+                    <Label Text="Connect &amp; Support" 
+                           FontAttributes="Bold" 
+                           FontSize="16" 
+                           TextColor="Black" />
+
+                    <Label Text="lionheartpraise@gmail.com" 
+                           TextColor="Blue" 
+                           TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnEmailTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Text="YouTube: Lionheart Praise" 
+                           TextColor="Blue" 
+                           TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnYouTubeTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Text="SoundCloud: Lionheart Praise" 
+                           TextColor="Blue" 
+                           TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnSoundCloudTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Text="©2026 Marco 'Marc' J. Casale&#10;Henrietta, NY" 
+                           FontSize="12" 
+                           TextColor="Gray" 
+                           HorizontalTextAlignment="Center" 
+                           Margin="0,20,0,0"/>
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- Footer button -->
+            <Button Grid.Row="2" 
+                    Text="Close" 
+                    Clicked="OnCloseClicked" 
+                    BackgroundColor="#2196F3" 
+                    TextColor="White" 
+                    CornerRadius="10" 
+                    Margin="0,10,0,0"/>
+        </Grid>
+    </Border>
+</toolkit:Popup>
+    

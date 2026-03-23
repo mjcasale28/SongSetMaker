@@ -16,6 +16,7 @@ namespace SongSetMaker.Views
             InitializeComponent();
             BindingContext = viewModel;
             _db = db;
+
         }
 
         protected override async void OnAppearing()

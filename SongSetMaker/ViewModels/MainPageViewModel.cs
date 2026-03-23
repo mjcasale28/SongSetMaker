@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -28,7 +29,7 @@ namespace SongSetMaker.ViewModels
 
         private readonly IDatabaseService _db;
         private RESTApiService apiServ;
-
+        private readonly string _dbPath = Constants.DatabasePath;
         public ObservableCollection<string> SortOptions { get; } =
                 new ObservableCollection<string>
                 {
@@ -504,5 +505,162 @@ namespace SongSetMaker.ViewModels
                 await _db.AddHistoryAsync(_songs);
             }
         }
+
+        [RelayCommand]
+        private async Task ExportDatabase()
+        {
+            try
+            {
+                var dbService = _db;
+                // Dispose/close the connection
+                if (dbService is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+                else if (dbService is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
+
+                await Task.Delay(100);  // Small delay helps release file lock on some platforms (especially Android)
+
+                // Now export safely
+                if (!File.Exists(Constants.DatabasePath))
+                {
+                    await Shell.Current.DisplayAlert("Error", "Database not found.", "OK");
+                    return;
+                }
+
+                byte[] dbBytes = File.ReadAllBytes(Constants.DatabasePath);
+                using var memoryStream = new MemoryStream(dbBytes);
+
+                var result = await FileSaver.Default.SaveAsync("SongSetMakerBackup.db", memoryStream);
+
+                if (result.IsSuccessful)
+                {
+                    await Shell.Current.DisplayAlert("Success", $"Exported!", "OK");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", result.Exception?.Message ?? "Cancelled", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
+        [RelayCommand]
+        private async Task ImportDatabase()
+        {
+            try
+            {
+                var options = new PickOptions
+                {
+                    PickerTitle = "Select SongSetMaker backup (.db)",
+                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.Android, new[] { "application/octet-stream", ".db" } },
+                    { DevicePlatform.iOS, new[] { "public.database" } },
+                    { DevicePlatform.WinUI, new[] { ".db" } },
+                    { DevicePlatform.MacCatalyst, new[] { ".db" } }
+                })
+                };
+
+                var result = await FilePicker.PickAsync(options);
+
+                if (result == null) return; // cancelled
+
+                // Optional: warn about overwrite
+                bool confirm = await Shell.Current.DisplayAlert(
+                    "Import Database",
+                    "This will REPLACE your current song library. Continue?",
+                    "Yes", "No");
+
+                if (!confirm) return;
+
+                var dbService = _db;
+                // Dispose/close the connection
+                if (dbService is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+                else if (dbService is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
+
+                await Task.Delay(100);  // Small delay helps release file lock on some platforms (especially Android)
+
+
+                // Close any open connections if using singleton/context (important!)
+                // e.g. if you have a static SQLiteConnection, close/dispose it here
+
+                await using var sourceStream = await result.OpenReadAsync();
+                await using var destStream = File.Create(_dbPath);
+
+                await sourceStream.CopyToAsync(destStream);
+
+                await Shell.Current.DisplayAlert("Success", "Database imported! Restart the app to see changes.", "OK");
+
+                // Optional: reload data / re-init collections
+                // await LoadSongsAsync();  // call your refresh method
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Import failed: {ex.Message}", "OK");
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowAbout()
+        {
+            // 1. Create an instance of your Popup
+            var aboutPopup = new AboutPopup();
+
+            // 2. Show it using the current page
+            await Application.Current.MainPage.ShowPopupAsync(aboutPopup);
+        }
+        /*
+            string version = AppInfo.VersionString;
+            string build = AppInfo.BuildString;
+
+            string message = $@"
+SongSetMaker
+Version: 2.0
+Build: Stand-alone (local database only)
+
+An app to manage song libraries and create 
+and manage worship song sets.
+
+Built with .NET MAUI.
+©{DateTime.Now.Year}: Marco 'Marc' J. Casale
+Location: Henrietta, NY
+
+Features:
+• Search, Filter, and Sort Song library
+  • Search by: Artist, Title, Theme
+  • Filter by: Song Key
+  • Sort by: Tempo or Title
+• Add to custom sets and email set
+• View chords, scripture, YouTube videos
+• Backup/Export song library database. Import Database
+
+
+For support or feedback, contact: lionheartpraise@gmail.com
+Visit my music artist site: Lionheart Praise
+Websites:
+https://www.youtube.com/@lionheartpraise3697
+https://soundcloud.com/lionheartpraise
+";
+
+            await Shell.Current.DisplayAlert("About SongSetMaker", message, "OK");
+
+            // Alternative: navigate to a dedicated AboutPage
+            // await Shell.Current.GoToAsync(nameof(AboutPage));
+        }
+        */
     }
+        
 }
