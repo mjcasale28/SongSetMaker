@@ -14,6 +14,13 @@ public partial class AddSongPopup : Popup
         _db = db;
         BindingContext = new AddSongViewModel(_db,ClosePopup);
     }
+
+    // For Editing
+    public AddSongPopup(IDatabaseService db, Song songToEdit)
+    {
+        InitializeComponent();
+        BindingContext = new AddSongViewModel(db, ClosePopup, songToEdit);
+    }
     private async void ClosePopup() => await CloseAsync();
     private async void OnCancelClicked(object sender, EventArgs e)
     {

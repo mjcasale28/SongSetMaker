@@ -333,6 +333,13 @@ namespace SongSetMaker.Services
                 });
             }
         }
+        public async Task<int> UpdateSongToMasterAsync(Song song)
+        {
+            await Init();
+            // This will return the number of rows affected (should be 1)
+            return await _db.UpdateAsync(song);
+        }
+
 
         public async Task AddHistoryAsync(List<SongHistory> songhist)
         {

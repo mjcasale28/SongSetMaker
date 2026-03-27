@@ -10,6 +10,8 @@ namespace SongSetMaker.ViewModels
 {
     public class SongMenuViewModel
     {
+        public bool CanEdit { get; }
+
         public string Title { get; }
         public string YouTubeUrl { get; }
         public string ChordSheetUrl { get; }
@@ -22,8 +24,9 @@ namespace SongSetMaker.ViewModels
         public ICommand OpenHistoryCommand { get; }
         public ICommand OpenScriptureCommand { get; }
 
-        public SongMenuViewModel(Song song, IDatabaseService db)
+        public SongMenuViewModel(Song song, IDatabaseService db, bool canEdit=true)
         {
+            CanEdit = canEdit;
             Title = song.Title;
             YouTubeUrl = song.YouTubeUrl;
             ChordSheetUrl = song.ChordSheetUrl;
@@ -60,6 +63,7 @@ namespace SongSetMaker.ViewModels
 
                 await Application.Current.MainPage.ShowPopupAsync(popup);
             });
+            CanEdit = canEdit;
         } // End of Song Method
         public SongMenuViewModel(SongSet song, IDatabaseService db)
         {

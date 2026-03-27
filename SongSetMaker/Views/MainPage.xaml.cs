@@ -48,12 +48,27 @@ namespace SongSetMaker.Views
         {
             if (sender is ImageButton btn && btn.BindingContext is Song song)
             {
-                await this.ShowPopupAsync(new SongMenuPopup(song, _db));
+                await this.ShowPopupAsync(new SongMenuPopup(song, _db, true));
             }
         }
+
+        /*
         private void OnAddSongClicked(object sender, EventArgs e)
         {
             this.ShowPopup(new AddSongPopup(_db));
         }
+        */
+
+        private async void OnAddSongClicked(object sender, EventArgs e)
+        {
+            var result = await Application.Current.MainPage.ShowPopupAsync(new AddSongPopup(_db));
+            /*
+            if (result != null)
+            {
+                await Shell.Current.DisplayAlert("Success", "Song added!", "OK");
+            }
+            */
+        }
+
     }
 }

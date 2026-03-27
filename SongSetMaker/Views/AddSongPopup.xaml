@@ -10,8 +10,8 @@
             Padding="5" 
             Spacing="10"
             BackgroundColor="Ivory">
-            
-            <Label Text="Add New Song"
+
+            <Label Text="{Binding PageTitle}"
                FontSize="20"
                HorizontalOptions="Center"
                TextColor="Black"
@@ -160,19 +160,20 @@
             </Grid>
 
             <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                <Button Text="Save Song"
-                    Command="{Binding SaveCommand}"
-                    BackgroundColor="{AppThemeBinding Light=#0078D4, Dark=#3399FF}"
-                    TextColor="White"
-                    CornerRadius="8"
-                    HeightRequest="48" />
-            
                 <Button Text="Cancel"
                     BackgroundColor="{AppThemeBinding Light=#0078D4, Dark=#3399FF}"
                     TextColor="White"
                     CornerRadius="8"
                     HeightRequest="48" 
                     Clicked="OnCancelClicked" />
+
+                <Button Text="Save Song"
+                    Command="{Binding SaveCommand}"
+                    BackgroundColor="{AppThemeBinding Light=#0078D4, Dark=#3399FF}"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HeightRequest="48" />
+                
             </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

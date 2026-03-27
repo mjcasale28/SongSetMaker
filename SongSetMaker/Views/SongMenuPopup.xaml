@@ -45,10 +45,19 @@
         </HorizontalStackLayout>
 
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-            <Button Text="Cancel"
+            <Button Text="Edit"
+                    BackgroundColor="Purple"
+                    TextColor="White"
+                    Clicked="OnEditSongClicked"
+                    IsVisible="{Binding CanEdit}"
+                    />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="Close"
                     BackgroundColor="DarkRed"
                     TextColor="White"
-                    Clicked="OnCancelClicked" />
+                    Clicked="OnCloseClicked" />
         </HorizontalStackLayout>
 
     </VerticalStackLayout>
