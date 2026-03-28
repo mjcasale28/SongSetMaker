@@ -6,10 +6,22 @@
              BackgroundColor="Navy"               
              Title="Song Library">
 
-        
+    <!--
+    "{OnPlatform Android=settings_green.png, WinUI=add.png}"
+    -->
+
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Song" IconImageSource="add.png" Clicked="OnAddSongClicked" Order="Primary" Priority="0" />
+        <ToolbarItem Text="Add Song"                      
+                     Clicked="OnAddSongClicked" 
+                     Order="Primary" Priority="0">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="MaterialIcons" 
+                         Glyph="&#xF0415;"
+                         Color="White"
+                         Size="32" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="Export"   Order="Secondary" Priority="1" Command="{Binding ExportDatabaseCommand}" />
         <ToolbarItem Text="Import"   Order="Secondary" Priority="2" Command="{Binding ImportDatabaseCommand}" />
         <ToolbarItem Text="About"    Order="Secondary" Priority="3" Command="{Binding ShowAboutCommand}" />

@@ -7,6 +7,7 @@
     xmlns:viewmodels="clr-namespace:SongSetMaker.ViewModels"
     Shell.BackgroundColor="Navy"
     Shell.TitleColor="White"
+    Shell.ForegroundColor="{OnPlatform Android=White, WinUI=White}"
     >
     <Shell.NavBarIsVisible>true</Shell.NavBarIsVisible>
     <TabBar>

@@ -8,10 +8,30 @@
 
     <ContentPage.ToolbarItems>
         <!---  Comment out these 3 buttons for the HCF version -->
-        <ToolbarItem IconImageSource="trash.png" Text="Clear Song Set"
-             Command="{Binding ClearSongSetCommand}" />
+        <ToolbarItem Text="Clear Song Set"                      
+                     Order="Primary" Priority="0"
+                     Command="{Binding ClearSongSetCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="MaterialIcons" 
+                         Glyph="&#xF0A79;"
+                         Color="White"
+                         Size="32" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Email Song Set"                      
+                     Order="Primary" Priority="0"
+                     Command="{Binding EmailSongSetCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="MaterialIcons" 
+                         Glyph="&#xF01F0;"
+                         Color="White"
+                         Size="32" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem> 
+        <!--
         <ToolbarItem IconImageSource="mail.png" Text="Email Song Set"
              Command="{Binding EmailSongSetCommand}" />
+        -->
         <!--
         <ToolbarItem IconImageSource="upload.png" Text="Upload Song Set"
                  Command="{Binding UploadSongSetCommand}" />

@@ -21,6 +21,7 @@ namespace SongSetMaker
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("materialdesignicons.ttf", "MaterialIcons");
                 });
 
             // Services
