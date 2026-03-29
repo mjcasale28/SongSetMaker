@@ -316,9 +316,17 @@ namespace SongSetMaker.ViewModels
             if (popup.SelectedDate is not DateTime selectedDate)
                 return;
 
+            List<SongSet> _mySongSet = new List<SongSet>();
+
             // 2. Update each song with the selected date
             foreach (var song in MySongs)
+            {
                 song.SongDate = selectedDate.ToString("MM/dd/yyyy");
+                _mySongSet.Add(song);
+            }
+
+            // 3. Store the songset into the db
+            await setSongsApi(_mySongSet);
 
             // 4. Build the email body
             var emailBody = BuildEmailBody(MySongs, selectedDate.ToString("MM/dd/yyyy"));
