@@ -22,9 +22,11 @@
                          Size="32" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Export"   Order="Secondary" Priority="1" Command="{Binding ExportDatabaseCommand}" />
-        <ToolbarItem Text="Import"   Order="Secondary" Priority="2" Command="{Binding ImportDatabaseCommand}" />
-        <ToolbarItem Text="About"    Order="Secondary" Priority="3" Command="{Binding ShowAboutCommand}" />
+        <ToolbarItem Text="Download"    Order="Secondary" Priority="1" Command="{Binding DownloadSongsCommand}" />
+        <ToolbarItem Text="History"    Order="Secondary" Priority="2" Command="{Binding DownloadHistoryCommand}" />
+        <ToolbarItem Text="Export"   Order="Secondary" Priority="3" Command="{Binding ExportDatabaseCommand}" />
+        <ToolbarItem Text="Import"   Order="Secondary" Priority="4" Command="{Binding ImportDatabaseCommand}" />
+        <ToolbarItem Text="About"    Order="Secondary" Priority="5" Command="{Binding ShowAboutCommand}" />
     </ContentPage.ToolbarItems>
 
     <!---

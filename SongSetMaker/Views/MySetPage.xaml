@@ -28,16 +28,17 @@
                          Size="32" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem> 
+        
         <!--
         <ToolbarItem IconImageSource="mail.png" Text="Email Song Set"
              Command="{Binding EmailSongSetCommand}" />
         -->
-        <!--
-        <ToolbarItem IconImageSource="upload.png" Text="Upload Song Set"
-                 Command="{Binding UploadSongSetCommand}" />
-        <ToolbarItem IconImageSource="download.png" Text="Download Song Set"
-                 Command="{Binding DownloadSongsCommand}" />
-        -->
+
+        <ToolbarItem IconImageSource="download.png" Text="Download"
+                 Order="Secondary" Priority="1" Command="{Binding DownloadSongsCommand}" />
+        <ToolbarItem IconImageSource="upload.png" Text="Upload"
+                 Order="Secondary" Priority="2" Command="{Binding UploadSongSetCommand}" />
+        
     </ContentPage.ToolbarItems>
     <Grid x:Name="RootGrid" Padding="10" ColumnDefinitions="*,Auto" RowDefinitions="Auto, *">
         <Grid ColumnDefinitions="*,*">

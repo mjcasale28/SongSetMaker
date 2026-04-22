@@ -32,7 +32,7 @@
                        FontAttributes="Bold" 
                        TextColor="Black" 
                        HorizontalTextAlignment="Center" />
-                <Label Text="Version 2.0" 
+                <Label Text="Version 2.1" 
                        FontSize="14" 
                        TextColor="#555" 
                        HorizontalTextAlignment="Center" />
@@ -54,7 +54,7 @@
                            FontAttributes="Bold" 
                            FontSize="16" 
                            TextColor="Black" />
-                    <Label Text="• Search/Filter (Artist, Title, Theme, Key)&#10;• Sort by Tempo or Title&#10;• Custom Sets &amp; Emailing&#10;• View Chords &amp; Scripture&#10;• Backup &amp; Export Database" 
+                    <Label Text="• Search/Filter (Artist, Title, Theme, Key)&#10;• Sort by Tempo or Title&#10;• Custom Sets &amp; Emailing&#10;• View Chords &amp; Scripture&#10;• Google Sheet Sync&#10;• Backup &amp; Export Database" 
                            LineHeight="1.2" 
                            TextColor="Black" />
 
